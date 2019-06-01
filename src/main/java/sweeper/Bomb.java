@@ -45,4 +45,26 @@ class Bomb {
     int getTotalBombs() {
         return totalBombs;
     }
+
+    void restart(Coord coord, int cols, int rows) {
+        for (int i = 0; i < cols; i++) {
+            for (int j = 0; j < rows; j++) {
+                Coord coord1 = new Coord(i, j);
+                bombMap.set(coord1, Box.ZERO);
+            }
+        }
+        for (int i = 0; i < totalBombs; i++) placeBomb(coord);
+    }
+
+    private void placeBomb(Coord coord) {
+        while (true) {
+            Coord coord1 = Ranges.getRandomCoord();
+            if (!coord.equals(coord1)) {
+                if (Box.BOMB == bombMap.get(coord1)) continue;
+                bombMap.set(coord1, Box.BOMB);
+                incNumbersAroundBomb(coord1);
+            }
+            break;
+        }
+    }
 }

@@ -2,7 +2,6 @@ import sweeper.Box;
 import sweeper.Coord;
 import sweeper.Game;
 import sweeper.Ranges;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -29,6 +28,7 @@ public class Minesweeper extends JFrame {
         initDialog();
         game = new Game(COLS, ROWS, BOMBS);
         game.start();
+        Game.isFirst = true;
         setImages();
         initLabel();
         initPanel();
@@ -78,9 +78,11 @@ public class Minesweeper extends JFrame {
                     x = (e.getX() - DELTA_X * (y % 2)) / IMAGE_SIZE;
                     Coord coord = new Coord(x, y);
                     if (e.getButton() == MouseEvent.BUTTON1)
-                        game.pressLeftButton(coord);
-                    if (e.getButton() == MouseEvent.BUTTON2)
+                        game.pressLeftButton(coord, COLS, ROWS);
+                    if (e.getButton() == MouseEvent.BUTTON2) {
                         game.start();
+                        Game.isFirst = true;
+                    }
                     if (e.getButton() == MouseEvent.BUTTON3)
                         game.pressRightButton(coord);
                     label.setText(getMessage()); }
@@ -110,7 +112,7 @@ public class Minesweeper extends JFrame {
     private void initFrame() {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Hexaminesweeper");
-        setResizable(false);
+        setResizable(true);
         setVisible(true);
         pack();
         setLocationRelativeTo(null);

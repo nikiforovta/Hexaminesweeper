@@ -4,8 +4,8 @@ public class Game {
 
     private Bomb bomb;
     private Flag flag;
-
     private GameState state;
+    public static boolean isFirst = true;
 
     public GameState getState() {
         return state;
@@ -21,6 +21,7 @@ public class Game {
         bomb.start();
         flag.start();
         state = GameState.PLAYED;
+        isFirst = true;
     }
 
     public Box getBox(Coord coord) {
@@ -31,10 +32,20 @@ public class Game {
     }
 
 
-    public void pressLeftButton(Coord coord) {
+    public void pressLeftButton(Coord coord, int cols, int rows) {
+        if (isFirst) {
+            isFirst = false;
+            Box checkBox = getBox(coord);
+            while (checkBox == Box.BOMB) {
+            bomb.restart(coord, cols, rows);
+            }
+            openBox(coord);
+            checkWinner();
+        } else {
         if (gameOver()) return;
         openBox(coord);
         checkWinner();
+        }
     }
 
     private void checkWinner() {
