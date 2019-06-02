@@ -25,26 +25,32 @@ public class Minesweeper extends JFrame {
     }
 
     private Minesweeper() {
-        initDialog();
+        String GREETINGS = "Введите размеры поля и количество мин через пробел \n" +
+                "*количество строк* *количество рядов* *количество мин*";
+        initDialog(GREETINGS);
         game = new Game(COLS, ROWS, BOMBS);
         game.start();
-        Game.isFirst = true;
         setImages();
         initLabel();
         initPanel();
         initFrame();
     }
 
-    private void initDialog() {
+    private void initDialog(String text) {
         JPanel jpanel = new JPanel();
-        String option = JOptionPane.showInputDialog(jpanel, "Введите размеры поля и количество мин через пробел \n" +
-                        "*количество строк* *количество рядов* *количество мин*",
+        String option = JOptionPane.showInputDialog(jpanel, text,
                 "Настройка", JOptionPane.INFORMATION_MESSAGE);
         String[] input = option.split(" ");
+        try {
         COLS = Integer.parseInt(input[0]);
         ROWS = Integer.parseInt(input[1]);
         BOMBS = Integer.parseInt(input[2]);
-
+        if (COLS < 2 || ROWS < 2 || BOMBS < 1) throw new NullPointerException();
+        } catch (RuntimeException e) {
+            String RETARD = "Вы что-то ввели не так, повторите ввод \n" +
+                    "*количество строк* *количество рядов* *количество мин*";
+            initDialog(RETARD);
+        }
     }
 
     private void initLabel() {
@@ -78,11 +84,7 @@ public class Minesweeper extends JFrame {
                     x = (e.getX() - DELTA_X * (y % 2)) / IMAGE_SIZE;
                     Coord coord = new Coord(x, y);
                     if (e.getButton() == MouseEvent.BUTTON1)
-                        game.pressLeftButton(coord, COLS, ROWS);
-                    if (e.getButton() == MouseEvent.BUTTON2) {
-                        game.start();
-                        Game.isFirst = true;
-                    }
+                        game.pressLeftButton(coord);
                     if (e.getButton() == MouseEvent.BUTTON3)
                         game.pressRightButton(coord);
                     label.setText(getMessage()); }
@@ -112,7 +114,7 @@ public class Minesweeper extends JFrame {
     private void initFrame() {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Hexaminesweeper");
-        setResizable(true);
+        setResizable(false);
         setVisible(true);
         pack();
         setLocationRelativeTo(null);

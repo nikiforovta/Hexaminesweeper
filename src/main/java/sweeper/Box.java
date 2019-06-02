@@ -7,6 +7,7 @@ public enum Box {
     NUM3,
     NUM4,
     NUM5,
+    NUM6,
     BOMB,
     OPENED,
     CLOSED,
@@ -16,7 +17,7 @@ public enum Box {
 
     public Object image;
 
-    Box getNextNumberBox() {
+    public Box getNextNumberBox() {
         return Box.values()[this.ordinal() + 1];
     }
 

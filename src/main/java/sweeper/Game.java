@@ -2,10 +2,10 @@ package sweeper;
 
 public class Game {
 
-    private Bomb bomb;
+    private static Bomb bomb;
     private Flag flag;
     private GameState state;
-    public static boolean isFirst = true;
+    private boolean isFirst = true;
 
     public GameState getState() {
         return state;
@@ -15,6 +15,10 @@ public class Game {
         Ranges.setSize(new Coord(cols, rows));
         bomb = new Bomb(bombs);
         flag = new Flag();
+    }
+
+    public static int getBombs() {
+        return bomb.getTotalBombs();
     }
 
     public void start() {
@@ -32,20 +36,22 @@ public class Game {
     }
 
 
-    public void pressLeftButton(Coord coord, int cols, int rows) {
+    public void pressLeftButton(Coord coord) {
         if (isFirst) {
             isFirst = false;
-            Box checkBox = getBox(coord);
-            while (checkBox == Box.BOMB) {
-            bomb.restart(coord, cols, rows);
+            while (getFistBox(coord) == Box.BOMB) {
+            bomb.restart(coord);
             }
             openBox(coord);
-            checkWinner();
         } else {
         if (gameOver()) return;
         openBox(coord);
         checkWinner();
         }
+    }
+
+    private Box getFistBox(Coord coord) {
+        return bomb.get(coord);
     }
 
     private void checkWinner() {

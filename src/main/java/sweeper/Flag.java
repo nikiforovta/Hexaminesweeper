@@ -30,11 +30,11 @@ class Flag {
         }
     }
 
-    void setFlaggedToBox(Coord coord) {
+    private void setFlaggedToBox(Coord coord) {
         flagMap.set(coord, Box.FLAGGED);
     }
 
-    void setClosedToBox(Coord coord) {
+    private void setClosedToBox(Coord coord) {
         flagMap.set(coord, Box.CLOSED);
     }
 

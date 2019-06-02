@@ -29,7 +29,7 @@ public class Ranges {
         return allCoords;
     }
 
-    static boolean inRange(Coord coord) {
+    public static boolean inRange(Coord coord) {
         return coord.x >= 0 && coord.x < size.x && coord.y >= 0 && coord.y < size.y;
     }
 
@@ -37,7 +37,7 @@ public class Ranges {
         return new Coord(random.nextInt(size.x), random.nextInt(size.y));
     }
 
-    static ArrayList<Coord> getCoordsAround(Coord coord) {
+    public static ArrayList<Coord> getCoordsAround(Coord coord) {
         Coord around;
         int remove = coord.y % 2;
         ArrayList<Coord> list = new ArrayList<>();
