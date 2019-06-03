@@ -43,13 +43,11 @@ public class Ranges {
         ArrayList<Coord> list = new ArrayList<>();
         for (int x = coord.x - 1; x <= coord.x + 1; x++)
             for (int y = coord.y - 1; y <= coord.y + 1; y++)
-                if (inRange(around = new Coord(x, y)))
-                    if (!around.equals(coord) &&
-                            (remove == 1 && !around.equals(new Coord(coord.x - 1, coord.y - 1))
-                                    && !around.equals(new Coord(coord.x - 1, coord.y + 1))
-                                    || remove == 0 && !around.equals(new Coord(coord.x + 1, coord.y - 1))
-                                    && !around.equals(new Coord(coord.x + 1, coord.y + 1))))
-                        list.add(around);
+                if (inRange(around = new Coord(x, y))) {
+                    Coord except1 = new Coord(remove == 0 ? coord.x + 1 : coord.x - 1, coord.y - 1);
+                    Coord except2 = new Coord(remove == 0 ? coord.x + 1 : coord.x - 1, coord.y + 1);
+                    if (!around.equals(coord) && !around.equals(except1) && !around.equals(except2)) list.add(around);
+                }
         return list;
     }
 }
