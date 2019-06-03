@@ -40,13 +40,13 @@ public class Game {
         if (isFirst) {
             isFirst = false;
             while (getFistBox(coord) == Box.BOMB) {
-            bomb.restart(coord);
+                bomb.restart(coord);
             }
             openBox(coord);
         } else {
-        if (gameOver()) return;
-        openBox(coord);
-        checkWinner();
+            if (gameOver()) return;
+            openBox(coord);
+            checkWinner();
         }
     }
 

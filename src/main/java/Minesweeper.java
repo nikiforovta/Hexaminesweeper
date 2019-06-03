@@ -1,7 +1,6 @@
+import sweeper.*;
 import sweeper.Box;
-import sweeper.Coord;
-import sweeper.Game;
-import sweeper.Ranges;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -10,7 +9,6 @@ import java.awt.event.MouseEvent;
 public class Minesweeper extends JFrame {
 
     private Game game;
-
     private JPanel panel;
     private JLabel label;
     private int COLS = 9;
@@ -25,9 +23,7 @@ public class Minesweeper extends JFrame {
     }
 
     private Minesweeper() {
-        String GREETINGS = "Введите размеры поля и количество мин через пробел \n" +
-                "*количество строк* *количество рядов* *количество мин*";
-        initDialog(GREETINGS);
+        initDialog(Message.GREETINGS);
         game = new Game(COLS, ROWS, BOMBS);
         game.start();
         setImages();
@@ -42,19 +38,20 @@ public class Minesweeper extends JFrame {
                 "Настройка", JOptionPane.INFORMATION_MESSAGE);
         String[] input = option.split(" ");
         try {
-        COLS = Integer.parseInt(input[0]);
-        ROWS = Integer.parseInt(input[1]);
-        BOMBS = Integer.parseInt(input[2]);
-        if (COLS < 2 || ROWS < 2 || BOMBS < 1) throw new NullPointerException();
+            COLS = Integer.parseInt(input[0]);
+            ROWS = Integer.parseInt(input[1]);
+            BOMBS = Integer.parseInt(input[2]);
+            if (COLS < 2 || ROWS < 2 || BOMBS < 1) throw new NullPointerException();
+            if (BOMBS > COLS * ROWS / 2) {
+                JOptionPane.showMessageDialog(jpanel, Message.MINERETARD);
+            }
         } catch (RuntimeException e) {
-            String RETARD = "Вы что-то ввели не так, повторите ввод \n" +
-                    "*количество строк* *количество рядов* *количество мин*";
-            initDialog(RETARD);
+            initDialog(Message.RETARD);
         }
     }
 
     private void initLabel() {
-        label = new JLabel(("Welcome!"));
+        label = new JLabel((Message.START));
         add(label, BorderLayout.SOUTH);
     }
 
@@ -87,10 +84,10 @@ public class Minesweeper extends JFrame {
                         game.pressLeftButton(coord);
                     if (e.getButton() == MouseEvent.BUTTON3)
                         game.pressRightButton(coord);
-                    label.setText(getMessage()); }
-                catch (NullPointerException ignored) {
+                    label.setText(getMessage());
+                } catch (NullPointerException ignored) {
                 }
-                    panel.repaint();
+                panel.repaint();
             }
         });
         panel.setPreferredSize(new Dimension(Ranges.getSize().x * IMAGE_SIZE + DELTA_X,
@@ -101,13 +98,13 @@ public class Minesweeper extends JFrame {
     private String getMessage() {
         switch (game.getState()) {
             case PLAYED:
-                return "Think twice!";
+                return Message.PLAYED;
             case BOMBED:
-                return "YOU LOSE!";
+                return Message.BOMBED;
             case WINNER:
-                return "Congratulations!";
+                return Message.WINNER;
             default:
-                return "Welcome!";
+                return Message.START;
         }
     }
 
