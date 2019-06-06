@@ -1,5 +1,5 @@
-import sweeper.*;
 import sweeper.Box;
+import sweeper.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,9 +11,9 @@ public class Minesweeper extends JFrame {
     private Game game;
     private JPanel panel;
     private JLabel label;
-    private int COLS = 9;
-    private int ROWS = 9;
-    private int BOMBS = 10;
+    private int COLS;
+    private int ROWS;
+    private int BOMBS;
     private final int IMAGE_SIZE = 50;
     private final int DELTA_X = 23;
     private final int DELTA_Y = 13;
