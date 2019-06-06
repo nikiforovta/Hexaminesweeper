@@ -22,10 +22,9 @@ public class Game {
     }
 
     public void start() {
-        bomb.start();
+        isFirst = true;
         flag.start();
         state = GameState.PLAYED;
-        isFirst = true;
     }
 
     public Box getBox(Coord coord) {
@@ -39,19 +38,13 @@ public class Game {
     public void pressLeftButton(Coord coord) {
         if (isFirst) {
             isFirst = false;
-            while (getFistBox(coord) == Box.BOMB) {
-                bomb.restart(coord);
-            }
+            bomb.start(coord);
             openBox(coord);
         } else {
             if (gameOver()) return;
             openBox(coord);
             checkWinner();
         }
-    }
-
-    private Box getFistBox(Coord coord) {
-        return bomb.get(coord);
     }
 
     private void checkWinner() {
